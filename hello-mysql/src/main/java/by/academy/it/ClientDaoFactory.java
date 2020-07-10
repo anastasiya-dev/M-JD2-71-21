@@ -15,6 +15,11 @@ public class ClientDaoFactory {
                 clientDao = new ClientDaoImpl();
             }
             return clientDao;
+        } else if ("mysql_test".equals(database)) {
+            if (clientDao == null) {
+                clientDao = new ClientDaoImpl(true);
+            }
+            return clientDao;
         }
         throw new InvalidParameterException("No such database implemented" + database);
     }

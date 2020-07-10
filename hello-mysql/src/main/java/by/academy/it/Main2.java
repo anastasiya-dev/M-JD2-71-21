@@ -12,16 +12,35 @@ public class Main2 {
     public static void main(String[] args) {
         try {
             ClientDao clientDao = ClientDaoFactory.getClientDao("mysql");
-
+            //Create
             ClientDto client = new ClientDto();
-            client.setId(1);
+            client.setId(101);
             client.setName("Name");
             client.setSecondName("Second Name");
             client.setEmail("name@mail.ru");
             client.setDateOfBirth(Date.valueOf("1977-05-24"));
             client.setGender('n');
-            log.info("Calling dao: " + clientDao);
+            log.info("Calling create: " + client);
             clientDao.create(client);
+
+            //Read created
+            ClientDto clientDtoCreated = clientDao.read(101);
+            log.info("Read after created: " + clientDtoCreated);
+
+            //Read max id
+            log.info("Max id in database: " + clientDao.getMaxId());
+
+            //Update created
+            clientDtoCreated.setName("Name 101");
+            clientDtoCreated.setSecondName("Second Name 100");
+            clientDao.update(clientDtoCreated);
+
+            //Read updated
+            ClientDto clientDtoUpdated = clientDao.read(101);
+            log.info("Read after update" + clientDtoUpdated);
+
+            //Delete updated
+            clientDao.delete(clientDtoUpdated);
 
         } catch (SQLException e) {
             log.log(Level.SEVERE, e.getMessage(), e);

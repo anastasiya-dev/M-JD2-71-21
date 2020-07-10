@@ -26,4 +26,9 @@ public class MySqlDataSource {
         return DriverManager.getConnection(url, properties);
     }
 
+    private static String testUrl = "jdbc:mysql://localhost:3306/client_test";
+
+    public static Connection getTestConnection() throws SQLException {
+        return DriverManager.getConnection(testUrl, properties);
+    }
 }
