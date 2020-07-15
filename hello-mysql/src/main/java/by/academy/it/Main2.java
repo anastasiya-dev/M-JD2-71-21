@@ -14,7 +14,8 @@ public class Main2 {
             ClientDao clientDao = ClientDaoFactory.getClientDao("mysql");
             //Create
             ClientDto client = new ClientDto();
-            client.setId(101);
+            int id = clientDao.getMaxId() + 1;
+            client.setId(id);
             client.setName("Name");
             client.setSecondName("Second Name");
             client.setEmail("name@mail.ru");
@@ -24,7 +25,7 @@ public class Main2 {
             clientDao.create(client);
 
             //Read created
-            ClientDto clientDtoCreated = clientDao.read(101);
+            ClientDto clientDtoCreated = clientDao.read(id);
             log.info("Read after created: " + clientDtoCreated);
 
             //Read max id
@@ -36,11 +37,11 @@ public class Main2 {
             clientDao.update(clientDtoCreated);
 
             //Read updated
-            ClientDto clientDtoUpdated = clientDao.read(101);
+            ClientDto clientDtoUpdated = clientDao.read(id);
             log.info("Read after update" + clientDtoUpdated);
 
             //Delete updated
-            clientDao.delete(clientDtoUpdated);
+            //clientDao.delete(clientDtoUpdated);
 
         } catch (SQLException e) {
             log.log(Level.SEVERE, e.getMessage(), e);

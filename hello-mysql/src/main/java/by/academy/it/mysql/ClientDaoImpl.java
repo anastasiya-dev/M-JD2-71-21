@@ -29,7 +29,7 @@ public class ClientDaoImpl implements ClientDao {
     public int create(ClientDto clientDto) throws SQLException {
         log.info("Creating new client: " + clientDto);
         PreparedStatement preparedStatement = connection.prepareStatement(
-                "insert into client.clients " +
+                "insert into clients " +
                 "values (?, ?, ?, ?, ?, ?)");
         preparedStatement.setInt(1, clientDto.getId());
         preparedStatement.setString(2, clientDto.getName());
@@ -47,7 +47,7 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public ClientDto read(int id) throws SQLException {
         PreparedStatement statement = connection
-                .prepareStatement("select * from client.clients where id=?");
+                .prepareStatement("select * from clients where id=?");
         statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
         List<ClientDto> clientDtos = parseResultSet(resultSet);
@@ -74,7 +74,7 @@ public class ClientDaoImpl implements ClientDao {
     public List<ClientDto> readAll() throws SQLException {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(
-                "select * from client.clients");
+                "select * from clients");
         List<ClientDto> clientDtos = parseResultSet(resultSet);
         statement.close();
         return clientDtos;
@@ -83,7 +83,7 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public void update(ClientDto clientDto) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(
-                "update client.clients " +
+                "update clients " +
                 "set name=?, second_name=?, email=?, date_of_birth=?, gender=? " +
                 "where id=?"
         );
@@ -107,7 +107,7 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public boolean delete(int id) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(
-                "delete from client.clients where id=?");
+                "delete from clients where id=?");
         preparedStatement.setInt(1, id);
         boolean result = preparedStatement.execute();
         preparedStatement.close();
@@ -118,7 +118,7 @@ public class ClientDaoImpl implements ClientDao {
     public int getMaxId() throws SQLException {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(
-                "select max(id) from client.clients");
+                "select max(id) from clients");
         int id = 0;
         if (resultSet.next()) id = resultSet.getInt(1);
         statement.close();
