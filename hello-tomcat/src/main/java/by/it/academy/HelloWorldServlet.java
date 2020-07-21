@@ -1,9 +1,7 @@
 package by.it.academy;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
@@ -19,11 +17,22 @@ public class HelloWorldServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
+            HttpSession session = req.getSession();
+            session.setAttribute("test", new Test());
+            session.getAttribute("test");
+
             String contextPath = req.getContextPath();
             log.info(() -> String.format("Context path: %s", contextPath) );
 
             PrintWriter writer = resp.getWriter();
-            writer.print(contextPath + ": Hello from my servlet" + Calendar.getInstance());
+            writer.println(contextPath + ": Hello from my servlet" + Calendar.getInstance());
+            writer.println(req.getHeader("User-Agent"));
+            resp.setHeader("My-Name", "Alexandr");
+
+            Cookie myCookie = new Cookie("My-Last-Name", "Veramkovich");
+            myCookie.setMaxAge(24*60*60);
+            resp.addCookie(myCookie);
+
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
