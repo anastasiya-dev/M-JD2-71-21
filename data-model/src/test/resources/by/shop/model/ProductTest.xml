@@ -1,0 +1,15 @@
+<dataset>
+
+    <product id="5d463f59-ea1b-4f73-91e2-fdcbe3c90000"
+             name="Lenova Notebook"
+             produce_date="2020-07-27 16:35:49.744000"
+             product_number="1234abcd"
+             serial_number="8888-8888"/>
+
+    <product id="5d463f59-ea1b-4f73-91e2-fdcbe3c90001"
+             name="Lenova Notebook 2"
+             produce_date="2020-07-27 16:35:49.744001"
+             product_number="1234abcd"
+             serial_number="9999-9999"/>
+
+</dataset>

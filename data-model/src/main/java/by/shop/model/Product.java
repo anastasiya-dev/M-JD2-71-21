@@ -29,6 +29,45 @@ public class Product {
     @Column(name = "produce_date")
     Date producedDate;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProductNumber() {
+        return productNumber;
+    }
+
+    public void setProductNumber(String productNumber) {
+        this.productNumber = productNumber;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public Date getProducedDate() {
+        return producedDate;
+    }
+
+    public void setProducedDate(Date producedDate) {
+        this.producedDate = producedDate;
+    }
 
     @Override
     public String toString() {
