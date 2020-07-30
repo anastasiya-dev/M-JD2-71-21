@@ -1,5 +1,6 @@
 package by.shop.model;
 
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -7,9 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Date;
-import java.util.Objects;
 
 @Entity
+@Data
 public class Product {
 
     @Id
@@ -28,81 +29,4 @@ public class Product {
 
     @Column(name = "produce_date")
     Date producedDate;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getProductNumber() {
-        return productNumber;
-    }
-
-    public void setProductNumber(String productNumber) {
-        this.productNumber = productNumber;
-    }
-
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public Date getProducedDate() {
-        return producedDate;
-    }
-
-    public void setProducedDate(Date producedDate) {
-        this.producedDate = producedDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", productNumber='" + productNumber + '\'' +
-                ", serialNumber='" + serialNumber + '\'' +
-                ", producedDate=" + producedDate +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Product product = (Product) o;
-
-        if (!Objects.equals(id, product.id)) return false;
-        if (!Objects.equals(name, product.name)) return false;
-        if (!Objects.equals(productNumber, product.productNumber))
-            return false;
-        if (!Objects.equals(serialNumber, product.serialNumber))
-            return false;
-        return Objects.equals(producedDate, product.producedDate);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (productNumber != null ? productNumber.hashCode() : 0);
-        result = 31 * result + (serialNumber != null ? serialNumber.hashCode() : 0);
-        result = 31 * result + (producedDate != null ? producedDate.hashCode() : 0);
-        return result;
-    }
 }

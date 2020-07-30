@@ -3,7 +3,6 @@ package by.shop.model;
 import by.shop.datasource.MySqlDataSource;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.ext.mysql.MySqlConnection;
@@ -17,6 +16,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -26,21 +27,17 @@ import static org.junit.Assert.*;
 
 public class ProductTest {
 
+    private static final Logger log = LoggerFactory.getLogger(ProductTest.class);
     SessionFactory factory;
+    StandardServiceRegistry registry;
 
     @Before
     public void setUp() {
-        // A SessionFactory is set up once for an application!
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+        registry = new StandardServiceRegistryBuilder()
                 .configure("hibernate.test.cfg.xml") // configures settings from hibernate.cfg.xml
                 .build();
-        try {
-            factory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-        } catch (Exception e) {
-            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-            // so destroy it manually.
-            StandardServiceRegistryBuilder.destroy(registry);
-        }
+        factory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+
     }
 
     @Test
@@ -55,7 +52,7 @@ public class ProductTest {
         //When:
         Session session = factory.openSession();
         Transaction tx = null;
-        String productId;
+        String productId = null;
         try {
             tx = session.beginTransaction();
 
@@ -67,8 +64,8 @@ public class ProductTest {
 
             tx.commit();
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             if (tx != null) tx.rollback();
-            throw e;
         } finally {
             session.close();
         }
@@ -101,15 +98,15 @@ public class ProductTest {
             System.out.println("Product Name: " + product.getName());
             tx.commit();
         } catch (Exception e) {
-            e.printStackTrace();
-            tx.rollback();
+            log.error(e.getMessage(), e);
+            if (tx != null) tx.rollback();
         } finally {
             appSession.close();
         }
 
         //Then
         assertNotNull(product);
-        assertEquals("Lenova Notebook", product.name);
+        assertEquals("Lenova Notebook", product.getName());
         DatabaseOperation.DELETE.execute(connection, dataSet);
         connection.close();
 
@@ -126,29 +123,23 @@ public class ProductTest {
                 .getResourceAsStream("ProductTest.xml"));
         DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
 
-        Session appSession = factory.openSession();
-
-        //When
-        Product product = null;
+        Product product;
         Transaction tx = null;
-        try {
+        //When
+        try (Session appSession = factory.openSession()) {
             tx = appSession.beginTransaction();
             product = appSession.get(Product.class, "5d463f59-ea1b-4f73-91e2-fdcbe3c90001");
-
             product.setProductNumber("99999_updated");
             product.setSerialNumber("11111_updated");
-
             appSession.flush();
-
             tx.commit();
         } catch (Exception e) {
-            e.printStackTrace();
-            tx.rollback();
-        } finally {
-            appSession.close();
+            log.error(e.getMessage(), e);
+            if (tx != null) tx.rollback();
         }
 
         //Then
+        DatabaseOperation.DELETE.execute(connection, dataSet);
         connection.close();
     }
 
@@ -162,13 +153,10 @@ public class ProductTest {
                 .getResourceAsStream("ProductTest.xml"));
         DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
 
-        Session appSession = factory.openSession();
-
         //When
-        Product product1 = null;
-        Product product2 = null;
+        Product product1, product2;
         Transaction tx = null;
-        try {
+        try(Session appSession = factory.openSession()) {
             tx = appSession.beginTransaction();
             product1 = appSession.get(Product.class, "5d463f59-ea1b-4f73-91e2-fdcbe3c90000");
             appSession.delete(product1);
@@ -178,13 +166,12 @@ public class ProductTest {
 
             tx.commit();
         } catch (Exception e) {
-            e.printStackTrace();
-            tx.rollback();
-        } finally {
-            appSession.close();
+            log.error(e.getMessage(), e);
+            if (tx != null) tx.rollback();
         }
 
         //Then
+        DatabaseOperation.DELETE.execute(connection, dataSet);
         connection.close();
 
     }
@@ -192,6 +179,7 @@ public class ProductTest {
 
     @After
     public void tearDown() {
+        StandardServiceRegistryBuilder.destroy(registry);
         if (!factory.isClosed()) {
             factory.close();
             factory = null;

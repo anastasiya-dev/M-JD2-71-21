@@ -1,5 +1,9 @@
 package by.shop.datasource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -7,24 +11,24 @@ import java.util.Properties;
 
 public class MySqlDataSource {
 
-    static Properties properties = new Properties();
+    private final static Logger log = LoggerFactory.getLogger(MySqlDataSource.class);
+    private static Properties properties = new Properties();
 
     static {
-        properties.put("user", "root");
-        properties.put("password", "root");
-        properties.put("useSSL", "false");
-        properties.put("serverTimezone", "UTC");
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            properties.load(MySqlDataSource.class
+                    .getResourceAsStream("/shopTestDataSource.properties"));
+            Class.forName(properties.getProperty("jdbc.drivers"));
+        } catch (ClassNotFoundException | IOException e) {
+            log.error(e.getMessage(), e);
         }
     }
 
-    private static String testUrl = "jdbc:mysql://localhost:3306/shop_test";
-
     public static Connection getTestConnection() throws SQLException {
-        return DriverManager.getConnection(testUrl, properties);
+        return DriverManager.getConnection(
+                properties.getProperty("url"),
+                properties
+        );
     }
 
 }
