@@ -1,31 +1,21 @@
 package by.shop.model;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-public class EmployeeTest {
-
-    SessionFactory factory;
-    StandardServiceRegistry registry;
+public class EmployeeTest extends ModelTest {
 
     @Before
     public void setUp()  {
-        registry = new StandardServiceRegistryBuilder()
-                .configure("hibernate.test.cfg.xml")
-                .build();
-        factory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-
+        super.setUp();
     }
 
     @Test
@@ -96,6 +86,6 @@ public class EmployeeTest {
 
     @After
     public void tearDown() {
-        StandardServiceRegistryBuilder.destroy(registry);
+        super.tearDown();
     }
 }

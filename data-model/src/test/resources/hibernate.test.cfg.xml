@@ -17,6 +17,7 @@
         <mapping class="by.shop.model.Product"/>
         <mapping class="by.shop.model.Employee"/>
         <mapping class="by.shop.model.EmployeeDetails"/>
+        <mapping class="by.shop.model.Department"/>
 
     </session-factory>
 

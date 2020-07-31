@@ -8,11 +8,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.ext.mysql.MySqlConnection;
 import org.dbunit.operation.DatabaseOperation;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,19 +21,14 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-public class ProductTest {
+public class ProductTest extends ModelTest {
 
     private static final Logger log = LoggerFactory.getLogger(ProductTest.class);
-    SessionFactory factory;
-    StandardServiceRegistry registry;
+
 
     @Before
     public void setUp() {
-        registry = new StandardServiceRegistryBuilder()
-                .configure("hibernate.test.cfg.xml") // configures settings from hibernate.cfg.xml
-                .build();
-        factory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-
+        super.setUp();
     }
 
     @Test
@@ -179,10 +170,6 @@ public class ProductTest {
 
     @After
     public void tearDown() {
-        StandardServiceRegistryBuilder.destroy(registry);
-        if (!factory.isClosed()) {
-            factory.close();
-            factory = null;
-        }
+        super.tearDown();
     }
 }

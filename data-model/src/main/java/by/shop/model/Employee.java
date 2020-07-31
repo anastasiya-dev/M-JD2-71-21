@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Data
 @Entity
+@Table(name = "employee")
 public class Employee {
 
     @Id
@@ -27,4 +28,6 @@ public class Employee {
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private EmployeeDetails employeeDetails;
 
+    @ManyToOne
+    private Department department;
 }
