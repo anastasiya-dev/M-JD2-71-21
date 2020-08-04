@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DepartmentUtil {
 
-    public void addEmployeesToDepartment(List<Employee> list, Department department) {
+    public static void addEmployeesToDepartment(List<Employee> list, Department department) {
         for(Employee employee:list) {
             employee.setDepartment(department);
         }

@@ -1,10 +1,11 @@
 package by.shop.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.*;
 
 @Data
 @Entity
@@ -30,4 +31,8 @@ public class Employee {
 
     @ManyToOne
     private Department department;
+
+    @ManyToMany(mappedBy = "employees")
+    @EqualsAndHashCode.Exclude
+    private Set<Meeting> meetings = new HashSet<>();
 }

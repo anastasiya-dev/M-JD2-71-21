@@ -7,8 +7,11 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.ext.mysql.MySqlConnection;
 import org.dbunit.operation.DatabaseOperation;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +19,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -147,7 +153,7 @@ public class ProductTest extends ModelTest {
         //When
         Product product1, product2;
         Transaction tx = null;
-        try(Session appSession = factory.openSession()) {
+        try (Session appSession = factory.openSession()) {
             tx = appSession.beginTransaction();
             product1 = appSession.get(Product.class, "5d463f59-ea1b-4f73-91e2-fdcbe3c90000");
             appSession.delete(product1);
@@ -165,6 +171,59 @@ public class ProductTest extends ModelTest {
         DatabaseOperation.DELETE.execute(connection, dataSet);
         connection.close();
 
+    }
+
+    @Test
+    public void query() throws SQLException, DatabaseUnitException {
+        //Given:
+        IDatabaseConnection connection = new MySqlConnection(
+                MySqlDataSource.getTestConnection(),
+                "shop_test");
+        IDataSet dataSet = new FlatXmlDataSetBuilder().build(ProductTest.class
+                .getResourceAsStream("ProductTest.xml"));
+        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+
+        //When
+        Session session = factory.openSession();
+        Query<Product> query = session
+                .createQuery("from Product p where p.name like :product", Product.class);
+        query.setParameter("product", "%Notebook%");
+        query.setFirstResult(0);
+        query.setMaxResults(2);
+        List<Product> products = query.list();
+
+        //Then
+        assertNotNull(products);
+        assertTrue(products.size() == 2);
+        DatabaseOperation.DELETE.execute(connection, dataSet);
+        connection.close();
+        if (session.isOpen()) session.close();
+    }
+
+    @Test
+    public void searchByDate() throws SQLException, DatabaseUnitException, ParseException {
+        //Given:
+        IDatabaseConnection connection = new MySqlConnection(
+                MySqlDataSource.getTestConnection(),
+                "shop_test");
+        IDataSet dataSet = new FlatXmlDataSetBuilder().build(ProductTest.class
+                .getResourceAsStream("ProductTest.xml"));
+        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+
+        //When
+        Session session = factory.openSession();
+        Criteria criteria = session.createCriteria(Product.class);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date startDate = simpleDateFormat.parse("01-01-2020");
+        Date endDate = simpleDateFormat.parse("01-04-2020");
+        criteria.add(Restrictions.between("producedDate", startDate, endDate));
+        List<Product> list = criteria.list();
+
+        //Then
+        assertNotNull(list);
+        assertEquals(3, list.size());
+        DatabaseOperation.DELETE.execute(connection, dataSet);
+        connection.close();
     }
 
 

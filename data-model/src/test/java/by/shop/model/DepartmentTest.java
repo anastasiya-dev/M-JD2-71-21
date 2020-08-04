@@ -9,6 +9,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 
@@ -74,7 +76,7 @@ public class DepartmentTest extends ModelTest {
         String departmentName = "Department2";
         Department department = createDepartment(departmentName);
         int employeesCount = 2;
-        List<Employee> employees = createEmployees(employeesCount, department);
+        List<Employee> employees = createEmployees2(employeesCount, department);
         department.setEmployees(employees);
 
         //When
@@ -102,6 +104,24 @@ public class DepartmentTest extends ModelTest {
         }
         return list;
     }
+
+    private List<Employee> createEmployees2(int employeesCount, Department department) {
+        return Stream.iterate(0, i -> i + 1)
+                .limit(employeesCount)
+                .map(i -> {
+                    Employee employee = new Employee();
+                    employee.setLastName("LastName" + i);
+                    employee.setFirstName("FirstName" + i);
+                    employee.setBirthDate(new Date());
+                    EmployeeDetails employeeDetails = new EmployeeDetails();
+                    employeeDetails.setEmployee(employee);
+                    employee.setEmployeeDetails(employeeDetails);
+                    employee.setDepartment(department);
+                    return employee;
+                }).collect(Collectors.toList());
+    }
+
+
 
     @After
     public void tearDown() {
