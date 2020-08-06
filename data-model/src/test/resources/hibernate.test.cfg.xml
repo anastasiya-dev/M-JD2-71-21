@@ -19,6 +19,7 @@
         <mapping class="by.shop.model.EmployeeDetails"/>
         <mapping class="by.shop.model.Department"/>
         <mapping class="by.shop.model.Meeting"/>
+        <mapping class="by.shop.model.Counter"/>
 
     </session-factory>
 
