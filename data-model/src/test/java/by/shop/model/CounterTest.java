@@ -1,5 +1,6 @@
 package by.shop.model;
 
+import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.After;
@@ -8,7 +9,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CounterTest extends ModelTest {
 
@@ -20,7 +21,7 @@ public class CounterTest extends ModelTest {
     }
 
     @Test
-    public void testCounter() {
+    public void testCounter() throws InterruptedException {
         //Given;
         int initialCount = 0;
         int maxCount = 1000;
@@ -32,6 +33,7 @@ public class CounterTest extends ModelTest {
         }
 
         //Then
+        Thread.sleep(10_000);
         Counter savedCounter = read();
         assertEquals(maxCount, savedCounter.getCount());
     }
@@ -54,7 +56,7 @@ public class CounterTest extends ModelTest {
         Transaction tx = null;
         try(final Session session = factory.openSession()) {
             tx = session.beginTransaction();
-            Counter counter = session.get(Counter.class, 1);
+            Counter counter = session.get(Counter.class, 1, LockMode.PESSIMISTIC_WRITE);
             long newCount = counter.getCount() + 1;
             counter.setCount(newCount);
             session.saveOrUpdate(counter);
