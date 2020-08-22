@@ -1,10 +1,12 @@
 package by.it.academy;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@Getter
 public class NotificationCommandExecutor {
 
     @Autowired
@@ -13,11 +15,15 @@ public class NotificationCommandExecutor {
 
     MessageSender smsMessageSender;
 
+    @Value("100")
+    int count;
+
     @Autowired
     UserRepository userRepository;
 
     @Autowired
     MessageGenerator messageGenerator;
+
 
     public boolean execute(NotificationCommand command) {
         System.out.println("Command to execute:");

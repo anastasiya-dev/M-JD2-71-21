@@ -3,10 +3,11 @@ package by.it.academy;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Arrays;
+import java.util.SortedMap;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         final AnnotationConfigApplicationContext context
                 = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
 
@@ -24,11 +25,13 @@ public class Main {
 
         final NotificationCommandExecutor executor =
                 (NotificationCommandExecutor) context.getBean("notificationCommandExecutor");
-
+        System.out.println("Executor count: " + executor.getCount());
         executor.execute(notificationCommand);
         executor.execute(notificationCommand2);
 
         System.out.println(Arrays.toString(context.getBeanDefinitionNames()));
+        context.close();
 
+        Thread.sleep(3000);
     }
 }

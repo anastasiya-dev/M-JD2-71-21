@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailMessageSender implements MessageSender {
 
+
     @Override
     public void send(Recipient recipient, Message message) {
         if (recipient.getEmailAddress() == null ||
