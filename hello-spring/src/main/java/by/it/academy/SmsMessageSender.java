@@ -1,5 +1,6 @@
 package by.it.academy;
 
+import by.it.academy.pojo.Recipient;
 import org.springframework.stereotype.Component;
 
 @Component

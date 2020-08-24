@@ -1,5 +1,7 @@
 package by.it.academy;
 
+import by.it.academy.pojo.Recipient;
+import by.it.academy.repository.UserDao;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +21,7 @@ public class NotificationCommandExecutor {
     int count;
 
     @Autowired
-    UserRepository userRepository;
+    UserDao userRepository;
 
     @Autowired
     MessageGenerator messageGenerator;
@@ -29,7 +31,7 @@ public class NotificationCommandExecutor {
         System.out.println("Command to execute:");
         System.out.println(command);
 
-        final Recipient recipient = userRepository.find(command.getUserId());
+        final Recipient recipient = (Recipient) userRepository.find(command.getUserId());
         final Message message = messageGenerator.generate(command.getMessageType());
 
         switch (command.getChannel()) {

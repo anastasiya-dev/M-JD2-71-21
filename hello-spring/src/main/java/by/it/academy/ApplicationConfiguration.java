@@ -1,15 +1,23 @@
 package by.it.academy;
 
+import by.it.academy.pojo.Recipient;
+import org.apache.commons.dbcp.BasicDataSource;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @ComponentScan("by.it.academy")
+@EnableAspectJAutoProxy
+@EnableTransactionManagement
 public class ApplicationConfiguration implements BeanPostProcessor {
 
     @Bean
@@ -18,16 +26,51 @@ public class ApplicationConfiguration implements BeanPostProcessor {
         return new NotificationCommand();
     }
 
-    @Bean
+    /*@Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
     public Recipient recipient(String emailAddress, String mobilePhone) {
         return new Recipient(emailAddress, mobilePhone);
-    }
+    }*/
 
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
     public Message message(String subject, String content) {
         return new Message(subject, content);
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        BasicDataSource dataSource = new org.apache.commons.dbcp.BasicDataSource();
+        dataSource.setUrl("jdbc:mysql://localhost:3306/notification?serverTimezone=UTC&createDatabaseIfNotExist=true");
+        dataSource.setUsername("root");
+        dataSource.setPassword("root");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        return dataSource;
+    }
+
+    @Bean
+    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource);
+        sessionFactory.setAnnotatedClasses(Recipient.class);
+        sessionFactory.setHibernateProperties(getHibernateProperties());
+        return sessionFactory;
+    }
+
+    @Bean
+    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+        HibernateTransactionManager hibernateTransactionManager =
+                new HibernateTransactionManager();
+        hibernateTransactionManager.setSessionFactory(sessionFactory);
+        return hibernateTransactionManager;
+    }
+
+    private Properties getHibernateProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL57Dialect");
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("show_sql","true");
+        return properties;
     }
 
     @Override
