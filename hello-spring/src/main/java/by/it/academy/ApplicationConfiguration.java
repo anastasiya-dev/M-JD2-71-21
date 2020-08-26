@@ -10,6 +10,8 @@ import org.springframework.context.annotation.*;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -18,6 +20,7 @@ import java.util.Properties;
 @ComponentScan("by.it.academy")
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
+@EnableWebMvc
 public class ApplicationConfiguration implements BeanPostProcessor {
 
     @Bean
@@ -83,5 +86,14 @@ public class ApplicationConfiguration implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         System.out.println("After name: " + beanName + " bean: " + bean);
         return bean;
+    }
+
+    @Bean
+    public InternalResourceViewResolver internalResourceViewResolver() {
+        InternalResourceViewResolver resolver
+                 = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/jsp/");
+        resolver.setSuffix(".jsp");
+        return resolver;
     }
 }
