@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Repository
 public class UserRepository implements ApplicationContextAware, UserDao<Recipient> {
@@ -35,6 +36,16 @@ public class UserRepository implements ApplicationContextAware, UserDao<Recipien
                 .stream()
                 .findFirst()
                 .orElseThrow();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Recipient> findAll(String searchStr) {
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("from Recipient r where r.emailAddress like :searchStr", Recipient.class)
+                .setParameter("searchStr", "%" + searchStr + "%")
+                .list();
     }
 
     @Override

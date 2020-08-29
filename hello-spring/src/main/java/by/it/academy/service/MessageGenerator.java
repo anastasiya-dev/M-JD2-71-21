@@ -1,5 +1,7 @@
-package by.it.academy;
+package by.it.academy.service;
 
+import by.it.academy.service.Message;
+import by.it.academy.service.MessageType;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;

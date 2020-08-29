@@ -12,7 +12,7 @@ public class StatAspect {
 
     private static AtomicInteger counter = new AtomicInteger(0);
 
-    @Before("execution(* NotificationCommandExecutor.execute(..))")
+    @Before("execution(* by.it.academy.service.NotificationCommandExecutor.execute(..))")
     public void countExecution() {
         int updatedCount = counter.incrementAndGet();
         System.out.println("!!! Execution count: " + updatedCount);

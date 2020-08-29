@@ -1,4 +1,4 @@
-package by.it.academy;
+package by.it.academy.service;
 
 import by.it.academy.pojo.Recipient;
 import org.springframework.stereotype.Component;

@@ -2,6 +2,10 @@ package by.it.academy;
 
 import by.it.academy.pojo.Recipient;
 import by.it.academy.repository.UserDao;
+import by.it.academy.service.Channel;
+import by.it.academy.service.MessageType;
+import by.it.academy.service.NotificationCommand;
+import by.it.academy.service.NotificationCommandExecutor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Arrays;
@@ -21,7 +25,6 @@ public class Main {
 
         final NotificationCommandExecutor executor =
                 (NotificationCommandExecutor) context.getBean("notificationCommandExecutor");
-        System.out.println("Executor count: " + executor.getCount());
 
         executor.execute(notificationCommand);
         executor.execute(notificationCommand2);

@@ -1,6 +1,7 @@
 package by.it.academy.repository;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface UserDao<T> {
 
@@ -9,4 +10,5 @@ public interface UserDao<T> {
     T read(Class clazz, Serializable id);
     void delete(T t);
     T find(String userId);
+    List<T> findAll(String searchStr);
 }

@@ -1,6 +1,8 @@
 package by.it.academy;
 
 import by.it.academy.pojo.Recipient;
+import by.it.academy.service.Message;
+import by.it.academy.service.NotificationCommand;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.BeansException;
@@ -21,7 +23,7 @@ import java.util.Properties;
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @EnableWebMvc
-public class ApplicationConfiguration implements BeanPostProcessor {
+public class ApplicationConfiguration {
 
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -38,7 +40,10 @@ public class ApplicationConfiguration implements BeanPostProcessor {
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
     public Message message(String subject, String content) {
-        return new Message(subject, content);
+        return Message.builder()
+                .content(content)
+                .subject(subject)
+                .build();
     }
 
     @Bean
@@ -74,18 +79,6 @@ public class ApplicationConfiguration implements BeanPostProcessor {
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("show_sql","true");
         return properties;
-    }
-
-    @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println("Before name: " + beanName + " bean: " + bean);
-        return bean;
-    }
-
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println("After name: " + beanName + " bean: " + bean);
-        return bean;
     }
 
     @Bean
