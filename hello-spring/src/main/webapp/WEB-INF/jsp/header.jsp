@@ -31,7 +31,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/hello-spring/new-recipient.html">New Recipient</a>
-            <a class="dropdown-item" href="#">Edit Recipient</a>
+            <a class="dropdown-item" href="/hello-spring/recipient-list.html">Edit Recipient</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Delete Recipient</a>
           </div>

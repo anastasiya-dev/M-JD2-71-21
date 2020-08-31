@@ -1,6 +1,6 @@
 package by.it.academy.controller;
 
-import by.it.academy.service.UserSearchService;
+import by.it.academy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class SearchController {
 
     @Autowired
-    UserSearchService userSearchService;
+    UserService userService;
 
     @GetMapping("/search.html")
     public ModelAndView search(
@@ -19,7 +19,7 @@ public class SearchController {
             ModelAndView modelAndView) {
         System.out.println("Search: " + search);
 
-        modelAndView.addObject("users", userSearchService.search(search));
+        modelAndView.addObject("users", userService.search(search));
         modelAndView.setViewName("search-result");
         return modelAndView;
     }

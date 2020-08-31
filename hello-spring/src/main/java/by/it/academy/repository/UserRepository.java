@@ -35,7 +35,7 @@ public class UserRepository implements ApplicationContextAware, UserDao<Recipien
                 .list()
                 .stream()
                 .findFirst()
-                .orElseThrow();
+                .orElse(null);
     }
 
     @Override
@@ -56,13 +56,17 @@ public class UserRepository implements ApplicationContextAware, UserDao<Recipien
     }
 
     @Override
+    @Transactional
     public void update(Recipient recipient) {
-
+        sessionFactory.getCurrentSession()
+                .update(recipient);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Recipient read(Class clazz, Serializable id) {
-        return null;
+        return (Recipient) sessionFactory.getCurrentSession()
+                .get(clazz, id);
     }
 
     @Override

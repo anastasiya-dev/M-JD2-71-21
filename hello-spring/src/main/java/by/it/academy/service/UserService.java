@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserSearchService {
+public class UserService {
 
     @Autowired
     UserDao userDao;
@@ -21,4 +21,23 @@ public class UserSearchService {
                 .collect(Collectors.toList());
     }
 
+    public boolean createNewRecipient(Recipient recipient) {
+        if (userDao.find(recipient.getUserId())!= null) {
+            return false;
+        }
+        userDao.create(recipient);
+        return true;
+    }
+
+    public List<Recipient> getAll() {
+        return userDao.findAll("");
+    }
+
+    public Recipient get(String id) {
+        return (Recipient) userDao.read(Recipient.class, id);
+    }
+
+    public void update(Recipient recipient) {
+        userDao.update(recipient);
+    }
 }
