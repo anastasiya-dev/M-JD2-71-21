@@ -25,7 +25,7 @@ public class WebAppInitializer implements ServletContainerInitializer {
 
         final ServletRegistration.Dynamic dispatcher =
                 servletContext.addServlet("dispatcher", dispatcherServlet);
-        dispatcher.addMapping("*.html");
+        dispatcher.addMapping("/");
         dispatcher.setLoadOnStartup(1);
     }
 }

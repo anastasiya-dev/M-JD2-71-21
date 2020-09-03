@@ -12,11 +12,8 @@ public class HomeController {
     public ModelAndView homePage(ModelAndView modelAndView) {
         System.out.println("Call homePage");
 
-
-
         modelAndView.addObject("greeting", "I love Spring and Summer!");
         modelAndView.setViewName("home"); // -> /WEB-INF/jsp/ + home + .jsp
-
 
         return modelAndView;
     }
