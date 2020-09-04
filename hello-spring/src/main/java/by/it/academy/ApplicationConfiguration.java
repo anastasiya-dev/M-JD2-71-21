@@ -5,9 +5,7 @@ import by.it.academy.service.Message;
 import by.it.academy.service.NotificationCommand;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.*;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -32,11 +30,6 @@ public class ApplicationConfiguration {
         return new NotificationCommand();
     }
 
-    /*@Bean
-    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-    public Recipient recipient(String emailAddress, String mobilePhone) {
-        return new Recipient(emailAddress, mobilePhone);
-    }*/
 
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)

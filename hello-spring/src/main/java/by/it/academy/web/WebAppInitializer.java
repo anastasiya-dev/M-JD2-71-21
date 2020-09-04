@@ -1,7 +1,6 @@
 package by.it.academy.web;
 
 import by.it.academy.ApplicationConfiguration;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 

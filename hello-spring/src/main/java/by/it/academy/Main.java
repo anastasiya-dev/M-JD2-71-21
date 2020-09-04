@@ -6,17 +6,21 @@ import by.it.academy.service.Channel;
 import by.it.academy.service.MessageType;
 import by.it.academy.service.NotificationCommand;
 import by.it.academy.service.NotificationCommandExecutor;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.mock.web.MockServletContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import java.util.Arrays;
 
 public class Main {
 
-    static AnnotationConfigApplicationContext context;
+    static AnnotationConfigWebApplicationContext context;
 
     public static void main(String[] args) throws InterruptedException {
         context
-                = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
+                = new AnnotationConfigWebApplicationContext();
+        context.register(ApplicationConfiguration.class);
+        context.setServletContext(new MockServletContext());
+        context.refresh();
         createUser("user1");
         createUser("user2");
 
@@ -30,7 +34,7 @@ public class Main {
         executor.execute(notificationCommand2);
 
         System.out.println(Arrays.toString(context.getBeanDefinitionNames()));
-        context.close();
+        //context.close();
 
         Thread.sleep(3000);
     }
