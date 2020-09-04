@@ -16,6 +16,11 @@
 <c:forEach items="${users}" var="user">
         <tr>
           <th scope="row">${user.id}</th>
+          <td>
+            <div class="text-center">
+              <img src="/hello-spring/recipient/${user.id}/image" class="rounded" alt="No Images"/>
+            </div>
+          </td>
           <td>${user.userId}</td>
           <td>${user.emailAddress}</td>
           <td>${user.mobilePhone}</td>

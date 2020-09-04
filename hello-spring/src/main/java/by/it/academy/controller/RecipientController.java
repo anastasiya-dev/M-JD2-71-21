@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 @Controller
@@ -38,10 +39,15 @@ public class RecipientController {
         byte[] bytes = file.getBytes();
         String fileName = file.getOriginalFilename();
         System.out.println("File location: " + fileName);
-        saveToDisk(bytes, fileName);
+        saveToDisk(bytes, recipient.getId());
 
         userService.update(recipient);
         return "redirect:recipient-list.html";
+    }
+
+    @GetMapping("/recipient/{id}/image")
+    public @ResponseBody byte[] recipientImage(@PathVariable String id) {
+        return readFileFromDisk(id);
     }
 
     @SneakyThrows
@@ -51,6 +57,16 @@ public class RecipientController {
         fileOutputStream.write(bytes);
         fileOutputStream.flush();
         fileOutputStream.close();
+    }
+
+    @SneakyThrows
+    private byte[] readFileFromDisk(String fileName) {
+        FileInputStream fileInputStream
+                = new FileInputStream("c:/temp/" + fileName);
+        byte[] image = new byte[fileInputStream.available()];
+        fileInputStream.read(image);
+        fileInputStream.close();
+        return image;
     }
 
 }

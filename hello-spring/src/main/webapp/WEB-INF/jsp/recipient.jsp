@@ -3,6 +3,7 @@
 
 <form action="/hello-spring/recipient.html" method="post" enctype="multipart/form-data">
   <div class="form-group">
+      <img src="/hello-spring/recipient/${user.id}/image" class="img-fluid" alt="No Images"/><br/>
       <label for="exampleFormControlFile1">Select image:</label>
       <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1">
   </div>
