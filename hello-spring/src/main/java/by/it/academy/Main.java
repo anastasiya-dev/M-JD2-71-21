@@ -35,8 +35,7 @@ public class Main {
 
         System.out.println(Arrays.toString(context.getBeanDefinitionNames()));
         //context.close();
-
-        Thread.sleep(3000);
+        //Thread.sleep(3000);
     }
 
     private static void createUser(String userId) {

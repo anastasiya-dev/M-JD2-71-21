@@ -22,6 +22,7 @@ import java.util.Properties;
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @EnableWebMvc
+@PropertySource("classpath:hello.properties")
 public class ApplicationConfiguration {
 
     @Bean

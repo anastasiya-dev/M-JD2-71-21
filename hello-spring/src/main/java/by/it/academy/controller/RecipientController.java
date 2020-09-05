@@ -4,6 +4,7 @@ import by.it.academy.pojo.Recipient;
 import by.it.academy.service.UserService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +18,9 @@ public class RecipientController {
 
     @Autowired
     UserService userService;
+
+    @Value("${image.location}")
+    String imageLocation;
 
     @GetMapping("/{id}/recipient.html")
     public ModelAndView showRecipientForm(
@@ -53,7 +57,7 @@ public class RecipientController {
     @SneakyThrows
     private void saveToDisk(byte[] bytes, String fileName) {
         FileOutputStream fileOutputStream
-                = new FileOutputStream("c:/temp/" + fileName);
+                = new FileOutputStream(imageLocation + fileName);
         fileOutputStream.write(bytes);
         fileOutputStream.flush();
         fileOutputStream.close();
@@ -62,7 +66,7 @@ public class RecipientController {
     @SneakyThrows
     private byte[] readFileFromDisk(String fileName) {
         FileInputStream fileInputStream
-                = new FileInputStream("c:/temp/" + fileName);
+                = new FileInputStream(imageLocation + fileName);
         byte[] image = new byte[fileInputStream.available()];
         fileInputStream.read(image);
         fileInputStream.close();
