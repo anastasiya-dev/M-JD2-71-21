@@ -3,6 +3,8 @@ package by.it.academy.controller;
 import by.it.academy.pojo.Recipient;
 import by.it.academy.service.UserService;
 import lombok.SneakyThrows;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,8 @@ import java.io.FileOutputStream;
 
 @Controller
 public class RecipientController {
+
+    private static final Logger log = LoggerFactory.getLogger(RecipientController.class);
 
     @Autowired
     UserService userService;
@@ -42,7 +46,7 @@ public class RecipientController {
 
         byte[] bytes = file.getBytes();
         String fileName = file.getOriginalFilename();
-        System.out.println("File location: " + fileName);
+        log.info("File location: " + fileName);
         saveToDisk(bytes, recipient.getId());
 
         userService.update(recipient);

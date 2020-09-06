@@ -1,5 +1,8 @@
 package by.it.academy.client;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -8,13 +11,15 @@ import java.net.http.HttpResponse;
 
 public class MyHttpClient {
 
+    private static final Logger log = LoggerFactory.getLogger(MyHttpClient.class);
+
     public static void main(String[] args) throws IOException, InterruptedException {
 
         String body = createPostBody();
         final HttpResponse<String> response = post(body);
 
-        System.out.println(response.statusCode());
-        System.out.println(response.body());
+        log.info("Response code: {}", response.statusCode());
+        log.info("Response body: {}", response.body());
     }
 
     private static String createPostBody() {
@@ -30,9 +35,7 @@ public class MyHttpClient {
                 .header("Content-Type", "application/json")
                 .build();
 
-        HttpResponse<String> response
-                = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        return response;
+        return httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
     }
 
 }

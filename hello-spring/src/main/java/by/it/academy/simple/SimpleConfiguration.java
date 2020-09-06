@@ -1,5 +1,7 @@
 package by.it.academy.simple;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SimpleConfiguration {
+
+    private static final Logger log = LoggerFactory.getLogger(SimpleConfiguration.class);
 
     @Bean
     public A a1() {
@@ -28,7 +32,7 @@ public class SimpleConfiguration {
                 new AnnotationConfigApplicationContext(SimpleConfiguration.class);
 
         B b = (B) context.getBean("b1");
-        System.out.println(b.getA().getA());
+        log.info(b.getA().getA());
     }
 
 }

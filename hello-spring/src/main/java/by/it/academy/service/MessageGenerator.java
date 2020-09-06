@@ -1,7 +1,7 @@
 package by.it.academy.service;
 
-import by.it.academy.service.Message;
-import by.it.academy.service.MessageType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MessageGenerator implements ApplicationContextAware, DisposableBean {
+
+    private static final Logger log = LoggerFactory.getLogger(MessageGenerator.class);
 
     private ApplicationContext context;
 
@@ -27,6 +29,6 @@ public class MessageGenerator implements ApplicationContextAware, DisposableBean
 
     @Override
     public void destroy() throws Exception {
-        System.out.println("Call destroy in MessageGenerator");
+        log.info("Call destroy in MessageGenerator");
     }
 }

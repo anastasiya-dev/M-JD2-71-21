@@ -6,12 +6,16 @@ import by.it.academy.service.Channel;
 import by.it.academy.service.MessageType;
 import by.it.academy.service.NotificationCommand;
 import by.it.academy.service.NotificationCommandExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import java.util.Arrays;
 
 public class Main {
+
+    private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     static AnnotationConfigWebApplicationContext context;
 
@@ -33,7 +37,7 @@ public class Main {
         executor.execute(notificationCommand);
         executor.execute(notificationCommand2);
 
-        System.out.println(Arrays.toString(context.getBeanDefinitionNames()));
+        log.info(Arrays.toString(context.getBeanDefinitionNames()));
         //context.close();
         //Thread.sleep(3000);
     }

@@ -2,6 +2,8 @@ package by.it.academy.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -9,17 +11,19 @@ import java.util.List;
 
 public class JsonExample {
 
+    private static final Logger log = LoggerFactory.getLogger(JsonExample.class);
+
     @SneakyThrows
     public static void main(String[] args) {
         ObjectMapper objectMapper =
                 new ObjectMapper();
         StringWriter writer = new StringWriter();
         objectMapper.writeValue(writer, createA());
-        System.out.println(writer.toString());
+        log.info(writer.toString());
 
         String json = writer.toString();
         final A a = objectMapper.readValue(json, A.class);
-        System.out.println(a);
+        log.info(a.toString());
     }
 
     private static A createA() {

@@ -3,6 +3,8 @@ package by.it.academy.service;
 import by.it.academy.pojo.Recipient;
 import by.it.academy.repository.UserDao;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 @Getter
 public class NotificationCommandExecutor {
+
+    private static final Logger log = LoggerFactory.getLogger(NotificationCommandExecutor.class);
 
     @Autowired
     @Value("#{emailMessageSender}")
@@ -25,15 +29,15 @@ public class NotificationCommandExecutor {
 
 
     public boolean execute(NotificationCommand command) {
-        System.out.println("Command to execute:");
-        System.out.println(command);
+        log.info("Command to execute:");
+        log.info(command.toString());
 
         final Recipient recipient = (Recipient) userRepository.find(command.getUserId());
         final Message message = messageGenerator.generate(command.getMessageType());
 
         switch (command.getChannel()) {
             case SMS: {
-                System.out.println("Not implemented");
+                log.info("Not implemented");
                 //smsMessageSender.send(...);
                 break;
             }
@@ -42,16 +46,16 @@ public class NotificationCommandExecutor {
                 break;
             }
             case VIBER: {
-                System.out.println("Not implemented");
+                log.info("Not implemented");
                 break;
             }
             default: {
-                System.out.println("No channel");
+                log.info("No channel");
             }
         }
 
 
-        System.out.println("Executed successfully");
+        log.info("Executed successfully");
         return true;
     }
 
