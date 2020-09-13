@@ -1,6 +1,7 @@
 package by.it.academy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ public class TransactionController {
 
     @GetMapping("/accounts/{id}/transactions")
     public List<Transaction> transactions(@PathVariable int id) {
-        return null;
+        return transactionService.getAllTransaction(id);
     }
 
     @GetMapping("/accounts/{id}/transactions/{trId}")
@@ -22,7 +23,7 @@ public class TransactionController {
             @PathVariable int id,
             @PathVariable int trId
     ) {
-        return null;
+        return transactionService.findTransaction(id, trId);
     }
 
     @PostMapping("/accounts/{id}/transactions")
@@ -30,7 +31,7 @@ public class TransactionController {
             @PathVariable int id,
             @RequestBody Transaction transaction
     ) {
-        return null;
+        return transactionService.createNewTransaction(id, transaction);
     }
 
     @PutMapping("/accounts/{id}/transactions/{trId}")
@@ -39,7 +40,7 @@ public class TransactionController {
             @PathVariable int trId,
             @RequestBody Transaction transaction
     ) {
-        return null;
+        return transactionService.updateTransaction(id, trId, transaction);
     }
 
     @DeleteMapping("/accounts/{id}/transactions/{trId}")
@@ -47,7 +48,11 @@ public class TransactionController {
             @PathVariable int id,
             @PathVariable int trId
     ) {
-        return null;
+        if (transactionService.deleteTransaction(id, trId)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

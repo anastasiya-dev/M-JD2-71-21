@@ -12,32 +12,37 @@ public class AccountService {
     AccountRepository accountRepository;
 
     public Account findAccountById(int id) {
-        return accountRepository.read(id);
+        return accountRepository.findById(id).orElse(null);
     }
 
     public List<Account> getAllAccounts() {
-        return accountRepository.readAll();
+        return (List<Account>) accountRepository.findAll();
     }
 
     public Account saveNewAccount(Account account) {
-        return accountRepository.create(account);
+        return accountRepository.save(account);
     }
 
     public Account updateAccount(int id, Account account) {
-        Account saveAccount = accountRepository.read(id);
+        Account saveAccount = accountRepository.findById(id).orElseThrow();
         if (saveAccount.equals(account)) {
             return saveAccount;
         }
         if (saveAccount.getBalance() != account.getBalance()
-                ||saveAccount.getName() != account.getName()) {
+                || !saveAccount.getName().equals(account.getName())) {
             saveAccount.setBalance(account.getBalance());
             saveAccount.setName(account.getName());
-            accountRepository.update(saveAccount);
+            accountRepository.save(saveAccount);
         }
-        return accountRepository.read(id);
+        return accountRepository.findById(id).orElseThrow();
     }
 
     public boolean deleteAccountById(int id) {
-        return accountRepository.delete(id);
+        if (accountRepository.existsById(id)) {
+            accountRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
