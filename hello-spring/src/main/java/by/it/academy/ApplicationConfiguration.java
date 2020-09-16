@@ -12,6 +12,8 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.sql.DataSource;
@@ -23,7 +25,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableWebMvc
 @PropertySource("classpath:hello.properties")
-public class ApplicationConfiguration {
+public class ApplicationConfiguration implements WebMvcConfigurer {
 
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -91,5 +93,10 @@ public class ApplicationConfiguration {
                 = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSize(5_000_000);
         return multipartResolver;
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("home");
     }
 }

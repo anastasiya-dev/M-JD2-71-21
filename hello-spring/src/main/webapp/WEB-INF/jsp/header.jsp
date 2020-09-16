@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!doctype html>
 <html lang="en">
   <head>
@@ -39,7 +40,18 @@
         <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li>
+        <sec:authorize access="isAuthenticated()">
+        <li class="nav-item">
+            <a class="nav-link" href="/hello-spring/logout">Logout</a>
+        </li>
+        </sec:authorize>
       </ul>
+      <sec:authorize access="hasRole('USER')">
+        <a href="#">Welcome user, <b><sec:authentication property="principal.username"/></b>!</a>
+      </sec:authorize>
+      <sec:authorize access="hasRole('ADMIN')">
+        <a href="#">Welcome Administrator, <b><sec:authentication property="principal.username"/></b>!</a>
+      </sec:authorize>
       <form class="form-inline my-2 my-lg-0" action="/hello-spring/search.html">
         <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
