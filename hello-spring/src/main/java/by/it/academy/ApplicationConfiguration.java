@@ -1,5 +1,7 @@
 package by.it.academy;
 
+import by.it.academy.pojo.AppRole;
+import by.it.academy.pojo.AppUser;
 import by.it.academy.pojo.Recipient;
 import by.it.academy.service.Message;
 import by.it.academy.service.NotificationCommand;
@@ -57,7 +59,8 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
-        sessionFactory.setAnnotatedClasses(Recipient.class);
+        sessionFactory.setAnnotatedClasses(Recipient.class,
+                AppUser.class, AppRole.class);
         sessionFactory.setHibernateProperties(getHibernateProperties());
         return sessionFactory;
     }

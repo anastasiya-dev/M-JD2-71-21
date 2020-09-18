@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
-@Repository
-public class UserRepository implements ApplicationContextAware, UserDao<Recipient> {
+@Repository("recipientRepository")
+public class RecipientRepository implements ApplicationContextAware, GenericDao<Recipient> {
 
     private ApplicationContext context;
 

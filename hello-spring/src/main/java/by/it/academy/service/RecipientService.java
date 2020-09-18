@@ -1,21 +1,23 @@
 package by.it.academy.service;
 
 import by.it.academy.pojo.Recipient;
-import by.it.academy.repository.UserDao;
+import by.it.academy.repository.GenericDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class RecipientService {
 
     @Autowired
-    UserDao userDao;
+    @Value("#{recipientRepository}")
+    GenericDao<Recipient> userDao;
 
     public List<String> search(String searchStr) {
-        return (List<String>)userDao.findAll(searchStr)
+        return (List<String>) userDao.findAll(searchStr)
                 .stream()
                 .map(o -> ((Recipient) o).getMobilePhone() + " " + ((Recipient) o).getEmailAddress())
                 .collect(Collectors.toList());

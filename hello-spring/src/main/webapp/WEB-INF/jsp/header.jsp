@@ -45,6 +45,14 @@
             <a class="nav-link" href="/hello-spring/logout">Logout</a>
         </li>
         </sec:authorize>
+        <sec:authorize access="!isAuthenticated()">
+        <li class="nav-item">
+            <a class="nav-link" href="/hello-spring/login">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/hello-spring/register">Register</a>
+        </li>
+        </sec:authorize>
       </ul>
       <sec:authorize access="hasRole('USER')">
         <a href="#">Welcome user, <b><sec:authentication property="principal.username"/></b>!</a>

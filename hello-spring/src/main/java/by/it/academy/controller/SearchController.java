@@ -1,6 +1,6 @@
 package by.it.academy.controller;
 
-import by.it.academy.service.UserService;
+import by.it.academy.service.RecipientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class SearchController {
     private static final Logger log = LoggerFactory.getLogger(SearchController.class);
 
     @Autowired
-    UserService userService;
+    RecipientService recipientService;
 
     @GetMapping("/search.html")
     @Secured("ROLE_USER")
@@ -25,7 +25,7 @@ public class SearchController {
             ModelAndView modelAndView) {
         log.info("Search: " + search);
 
-        modelAndView.addObject("users", userService.search(search));
+        modelAndView.addObject("users", recipientService.search(search));
         modelAndView.setViewName("search-result");
         return modelAndView;
     }

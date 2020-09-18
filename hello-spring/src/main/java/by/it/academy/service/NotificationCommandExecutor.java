@@ -1,7 +1,7 @@
 package by.it.academy.service;
 
 import by.it.academy.pojo.Recipient;
-import by.it.academy.repository.UserDao;
+import by.it.academy.repository.GenericDao;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,8 @@ public class NotificationCommandExecutor {
     MessageSender smsMessageSender;
 
     @Autowired
-    UserDao userRepository;
+    @Value("#{recipientRepository}")
+    GenericDao<Recipient> recipientRepository;
 
     @Autowired
     MessageGenerator messageGenerator;
@@ -32,7 +33,7 @@ public class NotificationCommandExecutor {
         log.info("Command to execute:");
         log.info(command.toString());
 
-        final Recipient recipient = (Recipient) userRepository.find(command.getUserId());
+        final Recipient recipient = (Recipient) recipientRepository.find(command.getUserId());
         final Message message = messageGenerator.generate(command.getMessageType());
 
         switch (command.getChannel()) {

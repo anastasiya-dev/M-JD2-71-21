@@ -1,7 +1,7 @@
 package by.it.academy.controller;
 
 import by.it.academy.pojo.Recipient;
-import by.it.academy.service.UserService;
+import by.it.academy.service.RecipientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +13,11 @@ import java.util.List;
 public class RecipientListController {
 
     @Autowired
-    UserService userService;
+    RecipientService recipientService;
 
     @GetMapping("/recipient-list.html")
     public ModelAndView recipientList(ModelAndView modelAndView) {
-        List<Recipient> users = userService.getAll();
+        List<Recipient> users = recipientService.getAll();
         modelAndView.setViewName("recipient-list");
         modelAndView.addObject("users", users);
         return modelAndView;

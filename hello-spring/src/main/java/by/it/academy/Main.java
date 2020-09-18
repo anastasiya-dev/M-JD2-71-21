@@ -1,7 +1,7 @@
 package by.it.academy;
 
 import by.it.academy.pojo.Recipient;
-import by.it.academy.repository.UserDao;
+import by.it.academy.repository.GenericDao;
 import by.it.academy.service.Channel;
 import by.it.academy.service.MessageType;
 import by.it.academy.service.NotificationCommand;
@@ -43,7 +43,7 @@ public class Main {
     }
 
     private static void createUser(String userId) {
-        UserDao userRepository = (UserDao) context.getBean("userRepository");
+        GenericDao userRepository = (GenericDao) context.getBean("userRepository");
         Recipient recipient = new Recipient(null, userId, userId + "@mail.ru", null);
         userRepository.create(recipient);
     }

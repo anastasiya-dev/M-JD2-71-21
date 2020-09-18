@@ -1,7 +1,7 @@
 package by.it.academy.controller;
 
 import by.it.academy.pojo.Recipient;
-import by.it.academy.service.UserService;
+import by.it.academy.service.RecipientService;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public class RecipientController {
     private static final Logger log = LoggerFactory.getLogger(RecipientController.class);
 
     @Autowired
-    UserService userService;
+    RecipientService recipientService;
 
     @Value("${image.location}")
     String imageLocation;
@@ -31,7 +31,7 @@ public class RecipientController {
             @PathVariable String id,
             ModelAndView modelAndView
     ) {
-        Recipient recipient = userService.get(id);
+        Recipient recipient = recipientService.get(id);
         modelAndView.addObject("user", recipient);
         modelAndView.setViewName("recipient");
         return modelAndView;
@@ -49,7 +49,7 @@ public class RecipientController {
         log.info("File location: " + fileName);
         saveToDisk(bytes, recipient.getId());
 
-        userService.update(recipient);
+        recipientService.update(recipient);
         return "redirect:recipient-list.html";
     }
 
